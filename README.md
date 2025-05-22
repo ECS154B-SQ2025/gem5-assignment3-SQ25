@@ -12,16 +12,16 @@ Title: Virtual Memory Translation Cache Designs
 - [Research Question](#research-question)
 - [Workloads](#workloads)
 - [System under simulation](#system-under-simulation)
-- [Experimental Setup](#experimental-setup)
-- [Analysis and Simulation](#analysis-and-simulation)
-  - [Step I: Hypothesis: Understanding the Virtual Memory System](#step-ii-hypothesis-understanding-the-virtual-memory-system)
-  - [Step II: Basic Performance Analysis](#step-iii-basic-performance-analysis)
-  - [Step III: Design Space Exploration](#step-iv-design-space-exploration)
-  - [Answering the Research Question](#answering-the-research-question)
-- [Extra Credit: A comparison between syscall emulation and full system](#step-i-a-comparison-between-syscall-emulation-and-full-system)
+- [Step I: A comparison between syscall emulation and full system](#step-i-a-comparison-between-syscall-emulation-and-full-system)
   - [Run in SE mode](#run-in-se-mode)
   - [Run in FS mode](#run-in-fs-mode)
   - [Compare SE and FS modes](#compare-se-and-fs-modes)
+- [Experimental Setup](#experimental-setup)
+- [Analysis and Simulation](#analysis-and-simulation)
+  - [Step II: Hypothesis: Understanding the Virtual Memory System](#step-ii-hypothesis-understanding-the-virtual-memory-system)
+  - [Step III: Basic Performance Analysis](#step-iii-basic-performance-analysis)
+  - [Step IV: Design Space Exploration](#step-iv-design-space-exploration)
+  - [Answering the Research Question](#answering-the-research-question)
 - [Hints](#hints)
   - [Useful stats](#useful-stats)
 - [Submission](#submission)
@@ -135,7 +135,7 @@ The animation below shows how the order of operations during the multiplication 
 
 ![matrix multiplication](images/mm_ikj.gif)
 
-#### Blocked matrix multiplication 
+#### Blocked matrix multiplication (Extra Credit Questions)
 
 You can improve the cache behavior of matrix multiplication by using a blocked algorithm.
 In this algorithm, rather than streaming through all of the inputs, you operate on one *block* at a time.
@@ -174,55 +174,7 @@ You will use the following configuration for your experiments:
 
 The provided `run.py` script allows you to configure these parameters.
 
-## Analysis and Simulation
-
-Complete the following steps and answer the questions for your report.
-
-### Step I: Hypothesis: Understanding the Virtual Memory System
-
-Before running any experiments:
-
-1. What do you expect to happen to performance as you increase the TLB size?
-   Why?
-2. What do you expect to happen to performance as you increase the page walk
-   cache size? Why?
-3. Do you expect increasing the TLB size to have a larger impact on performance
-   than increasing the page walk cache size? Why or why not? Use AMAT to justify
-   your answer (Look at the [Hints](#hints) section for more on calculating
-   AMAT).
-
-### Step II: Basic Performance Analysis
-
-Run both workloads with the small TLB (16 entries) and small page walk cache
-configuration.
-
-1. What is the TLB miss rate for each workload?
-2. What is the average page walk latency for each workload, i.e., what is the
-   the AMAT of a TLB miss?
-3. What percentage of execution time is spent handling TLB misses? (Hint:
-   compare the performance of SE mode and FS mode to get an approximation of the
-   time spent handling TLB misses.)
-
-### Step III: Design Space Exploration
-
-Run experiments varying both TLB size and page walk cache configuration.
-
-1. For each workload, what is the performance impact of:
-   - Doubling the TLB size (16 to 32 entries)
-   - Using the large page walk cache configuration
-
-### Answering the Research Question
-
-Using the data from your experiments, answer the research question:
-
-1. Should we allocate area to a TLB or to the page walk cache?
-
-Assume that the area difference of the larger TLB and the larger page walk cache
-is the same. (This is approximately true for the configurations we are using
-since the TLB will be fully associative and requires a lower access time.)
-
-
-## Extra Credit: A comparison between syscall emulation and full system
+## Step I A comparison between syscall emulation and full system
 
 We will now look at the differences between running our workloads in syscall emulation (SE) mode versus full system (FS) mode.
 
@@ -312,6 +264,53 @@ modes, you are comparing the same region of interest.
 
 Look at the [Hints](#hints) section on where to get started on reading the
 `stats.txt`.
+
+## Analysis and Simulation
+
+Complete the following steps and answer the questions for your report.
+
+### Step II: Hypothesis: Understanding the Virtual Memory System
+
+Before running any experiments:
+
+1. What do you expect to happen to performance as you increase the TLB size?
+   Why?
+2. What do you expect to happen to performance as you increase the page walk
+   cache size? Why?
+3. Do you expect increasing the TLB size to have a larger impact on performance
+   than increasing the page walk cache size? Why or why not? Use AMAT to justify
+   your answer (Look at the [Hints](#hints) section for more on calculating
+   AMAT).
+
+### Step III: Basic Performance Analysis
+
+Run both workloads with the small TLB (16 entries) and small page walk cache
+configuration.
+
+1. What is the TLB miss rate for each workload?
+2. What is the average page walk latency for each workload, i.e., what is the
+   the AMAT of a TLB miss?
+3. What percentage of execution time is spent handling TLB misses? (Hint:
+   compare the performance of SE mode and FS mode to get an approximation of the
+   time spent handling TLB misses.)
+
+### Step IV: Design Space Exploration
+
+Run experiments varying both TLB size and page walk cache configuration.
+
+1. For each workload, what is the performance impact of:
+   - Doubling the TLB size (16 to 32 entries)
+   - Using the large page walk cache configuration
+
+### Answering the Research Question
+
+Using the data from your experiments, answer the research question:
+
+1. Should we allocate area to a TLB or to the page walk cache?
+
+Assume that the area difference of the larger TLB and the larger page walk cache
+is the same. (This is approximately true for the configurations we are using
+since the TLB will be fully associative and requires a lower access time.)
 
 
 ## Hints
